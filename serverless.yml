@@ -1,0 +1,77 @@
+service: aws-node-rest-api-project
+
+frameworkVersion: "2"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: "20201221"
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:us-east-1:967900840755:table/TodoTable
+        - arn:aws:dynamodb:us-east-1:967900840755:table/PostTable
+
+functions:
+  hello:
+    handler: src/handlers/handler.hello
+    events:
+      - http:
+          path: /
+          method: get
+  addTodo:
+    handler: src/handlers/addTodo.handler
+    events:
+      - http:
+          method: POST
+          path: /addTodo
+  getPosts:
+    handler: src/handlers/getPosts.handler
+    events:
+      - http:
+          method: get
+          path: /notes
+  addPost:
+    handler: src/handlers/addPost.handler
+    events:
+      - http:
+          method: POST
+          path: /notes
+  getPost:
+    handler: src/handlers/getPost.handler
+    events:
+      - http:
+          method: GET
+          path: /note/{id}
+  updatePost:
+    handler: src/handlers/updatePost.handler
+    events:
+      - http:
+          method: PATCH
+          path: /note/{id}
+resources:
+  Resources:
+    TodoTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: TodoTable
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+    PostTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: PostTable
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
