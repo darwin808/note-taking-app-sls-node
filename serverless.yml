@@ -19,7 +19,7 @@ functions:
     handler: src/handlers/handler.hello
     events:
       - http:
-          path: /
+          path: /darwin
           method: get
   addTodo:
     handler: src/handlers/addTodo.handler
