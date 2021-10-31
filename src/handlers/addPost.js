@@ -1,6 +1,11 @@
 const { v4 } = require("uuid");
 const AWS = require("aws-sdk");
 
+const headers = {
+  "Access-Control-Allow-Origin": "*",
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Methods": "POST",
+};
 const addPost = async (event) => {
   const { name, message, fontColor, bgColor } = JSON.parse(event.body);
 
@@ -15,7 +20,7 @@ const addPost = async (event) => {
     message,
     fontColor,
     bgColor,
-    createdAt,
+    createdAt: createdAt.toISOString(),
   };
 
   await dynamodb
@@ -28,10 +33,7 @@ const addPost = async (event) => {
   return {
     statusCode: 200,
     body: JSON.stringify(newPost),
-    headers: {
-      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-      "Access-Control-Allow-Credentials": true, // Required for cookies, authorization headers with HTTPS
-    },
+    headers,
   };
 };
 
