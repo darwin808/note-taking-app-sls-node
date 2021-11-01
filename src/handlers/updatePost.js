@@ -9,7 +9,7 @@ const headers = {
 };
 
 const updatePost = async (event) => {
-  const { message } = JSON.parse(event.body);
+  const { message, userName } = JSON.parse(event.body);
   const { id } = event.pathParameters;
 
   const dynamodb = new AWS.DynamoDB.DocumentClient();
@@ -19,9 +19,10 @@ const updatePost = async (event) => {
       .update({
         TableName: "PostTable",
         Key: { id },
-        UpdateExpression: "set message = :message",
+        UpdateExpression: "set message = :message, userName = :userName",
         ExpressionAttributeValues: {
           ":message": message,
+          ":userName": userName,
         },
         ReturnValues: "ALL_NEW",
       })
