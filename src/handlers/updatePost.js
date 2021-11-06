@@ -20,7 +20,7 @@ const updatePost = async (event) => {
         TableName: "PostTable",
         Key: { id },
         UpdateExpression:
-          "set message = :message, userName = :userName picture = :picture",
+          "set message = :message, userName = :userName, picture = :picture",
         ExpressionAttributeValues: {
           ":message": message,
           ":userName": userName,
