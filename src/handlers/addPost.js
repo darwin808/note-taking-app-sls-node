@@ -7,7 +7,9 @@ const headers = {
   "Access-Control-Allow-Methods": "POST",
 };
 const addPost = async (event) => {
-  const { userName, message, fontColor, bgColor } = JSON.parse(event.body);
+  const { userName, message, fontColor, bgColor, picture } = JSON.parse(
+    event.body
+  );
 
   const createdAt = new Date();
   const id = v4();
@@ -20,6 +22,7 @@ const addPost = async (event) => {
     message,
     fontColor,
     bgColor,
+    picture,
     createdAt: createdAt.toISOString(),
   };
 

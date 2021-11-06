@@ -9,7 +9,7 @@ const headers = {
 };
 
 const updatePost = async (event) => {
-  const { message, userName } = JSON.parse(event.body);
+  const { message, userName, picture } = JSON.parse(event.body);
   const { id } = event.pathParameters;
 
   const dynamodb = new AWS.DynamoDB.DocumentClient();
@@ -19,10 +19,12 @@ const updatePost = async (event) => {
       .update({
         TableName: "PostTable",
         Key: { id },
-        UpdateExpression: "set message = :message, userName = :userName",
+        UpdateExpression:
+          "set message = :message, userName = :userName picture = :picture",
         ExpressionAttributeValues: {
           ":message": message,
           ":userName": userName,
+          ":picture": picture,
         },
         ReturnValues: "ALL_NEW",
       })
@@ -31,7 +33,7 @@ const updatePost = async (event) => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        msg: "todo updated",
+        msg: "Post is nice so its  updated",
       }),
       headers,
     };
